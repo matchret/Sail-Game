@@ -1,13 +1,16 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameLoopManager : MonoBehaviour
 {
     public GameObject player1Boat;
     public GameObject player2Boat;
     public Camera mainCamera;
+    public Slider forceBar; // Référence à la barre de force
     public float rotationSpeed = 100f;
-    public float shotForce = 10f;
+    public float maxForce = 50f; // Force maximale
+    public float forceChargeSpeed = 50f; // Vitesse de chargement de la force
     public float cameraDistance = 5f;
     public float cameraHeight = 2f;
 
@@ -16,12 +19,15 @@ public class GameLoopManager : MonoBehaviour
     private int player2Score = 0;
     private bool isWaitingForAction = true; // Le joueur peut tourner ou avancer
     private bool isGameOver = false; // Flag pour savoir si le jeu est terminé
+    private bool isChargingForce = false; // Indique si la barre de force est en train de se charger
+    private float currentForce = 0f; // Force actuelle
 
     void Start()
     {
         Debug.Log("Le jeu commence !");
         SetupBoats();
         StartPlayerTurn();
+        forceBar.gameObject.SetActive(false); // Cacher la barre de force au début
     }
 
     void Update()
@@ -31,10 +37,14 @@ public class GameLoopManager : MonoBehaviour
         if (isWaitingForAction)
         {
             HandlePlayerRotation();
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                HandlePlayerShot();
+                if (!isChargingForce) StartForceSelection(); // Début de la charge de force
+                else ApplyForce(); // Appliquer la force
             }
+
+            if (isChargingForce) UpdateForceBar(); // Mettre à jour la barre de force
         }
 
         UpdateCameraPosition();
@@ -75,14 +85,40 @@ public class GameLoopManager : MonoBehaviour
         activeBoat.transform.Rotate(Vector3.up * rotationInput * rotationSpeed * Time.deltaTime);
     }
 
-    void HandlePlayerShot()
+    void StartForceSelection()
     {
-        Debug.Log($"Joueur {currentPlayer} avance !");
+        isChargingForce = true;
+        currentForce = 0f;
+        forceBar.value = 0;
+        forceBar.gameObject.SetActive(true); // Afficher la barre de force
+    }
+
+    void UpdateForceBar()
+    {
+        currentForce += forceChargeSpeed * Time.deltaTime;
+
+        // Boucler la force pour recommencer à 0 après le maximum
+        if (currentForce > maxForce)
+        {
+            currentForce = 0;
+        }
+
+        forceBar.value = currentForce / maxForce; // Mettre à jour la valeur de la barre
+        Debug.Log($"Force actuelle : {currentForce}, Slider value : {forceBar.value}");
+    }
+
+    void ApplyForce()
+    {
+        isChargingForce = false;
+        forceBar.gameObject.SetActive(false); // Cacher la barre de force
+
         GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
 
-        // Appliquer une force dans la direction actuelle du bateau
+        // Appliquer la force au bateau actif
         Rigidbody rb = activeBoat.GetComponent<Rigidbody>();
-        rb.AddForce(activeBoat.transform.forward * shotForce, ForceMode.Impulse);
+        rb.AddForce(activeBoat.transform.forward * currentForce, ForceMode.Impulse);
+
+        Debug.Log($"Force appliquée : {currentForce}");
 
         // Fin du tour après un délai
         StartCoroutine(EndTurnAfterDelay(2f));
@@ -144,43 +180,6 @@ public class GameLoopManager : MonoBehaviour
             Debug.Log("Match nul !");
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log($"Collision DU GAMELOOOOP détectée avec : {other.name}");
-
-        Debug.Log($"Collision détectée avec : {other.name}");
-        if (other.CompareTag("Coin"))
-        {
-            Debug.Log($"Joueur {currentPlayer} a collecté une pièce !");
-
-            // Ajouter au score du joueur actif
-            if (currentPlayer == 1)
-            {
-                player1Score++;
-            }
-            else
-            {
-                player2Score++;
-            }
-
-            // Détruire la pièce
-            Destroy(other.gameObject);
-
-            Debug.Log($"Score actuel - Joueur 1 : {player1Score}, Joueur 2 : {player2Score}");
-        }
-    }
-
-    
-    public int GetPlayerScore(int player)
-    {
-        if (player == 1)
-            return player1Score;
-        else if (player == 2)
-            return player2Score;
-
-        return 0;
-    }
-    
     public void CoinCollected(int playerNumber, GameObject coin)
     {
         // Mise à jour des scores
@@ -204,5 +203,16 @@ public class GameLoopManager : MonoBehaviour
             EndGame();
         }
     }
+    
+    public int GetPlayerScore(int player)
+    {
+        if (player == 1)
+            return player1Score;
+        else if (player == 2)
+            return player2Score;
 
+        return 0;
+    }
 }
+
+
