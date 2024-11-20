@@ -11,7 +11,11 @@ public class ControlManager : MonoBehaviour
         MoveLeft,
         MoveRight,
         Dash,
-        Pause
+        Pause,
+        MoveLeftP2,
+        MoveRightP2,
+        DashP2,
+        PauseP2
     }
 
     // Configuration par défaut des touches
@@ -20,7 +24,12 @@ public class ControlManager : MonoBehaviour
         { Action.MoveLeft, KeyCode.A },
         { Action.MoveRight, KeyCode.D },
         { Action.Dash, KeyCode.Space },
-        { Action.Pause, KeyCode.P }
+        { Action.Pause, KeyCode.P },
+        
+        { Action.MoveLeftP2, KeyCode.LeftArrow },
+        { Action.MoveRightP2, KeyCode.RightArrow },
+        { Action.DashP2, KeyCode.Return}, // Enter
+        { Action.PauseP2, KeyCode.Escape }
     };
 
     // Bindings personnalisés par l'utilisateur
@@ -52,7 +61,7 @@ public class ControlManager : MonoBehaviour
     {
         if (userKeyBindings.TryGetValue(action, out KeyCode key))
         {
-            if (action == Action.MoveLeft || action == Action.MoveRight)
+            if (action == Action.MoveLeft || action == Action.MoveRight || action == Action.MoveLeftP2 || action == Action.MoveRightP2)
             {
                 return Input.GetKey(key);
             }

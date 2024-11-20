@@ -44,7 +44,7 @@ public class GameLoopManager : MonoBehaviour
     {
         if (isGameOver) return;
 
-        if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Pause))
+        if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Pause) || ControlManager.Instance.IsActionPressed(ControlManager.Action.PauseP2))
         {
             TogglePause();
         }
@@ -52,10 +52,11 @@ public class GameLoopManager : MonoBehaviour
         if (isWaitingForAction)
         {
             HandlePlayerRotation();
+
             //Ai Apply force
             bool isAIPlayer = (currentPlayer == 1 && GameData.Player1Type == "Ai") ||
                       (currentPlayer == 2 && GameData.Player2Type == "Ai");
-            if (isAIPlayer)
+            if (isAIPlayer) 
             {
                 if (!isChargingForce) StartForceSelection();
                 GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
@@ -66,7 +67,7 @@ public class GameLoopManager : MonoBehaviour
             }
             //If Human Player
             else {
-                if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Dash))
+                if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.Dash) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.DashP2) && currentPlayer == 2))
                 {
                     if (!isChargingForce) StartForceSelection();
                     else ApplyForce();
@@ -167,9 +168,9 @@ public class GameLoopManager : MonoBehaviour
         }
         else {
             float rotationInput = 0;
-            if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft))
+            if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeftP2) && currentPlayer == 2))
                 rotationInput = -1;
-            else if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight))
+            else if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRightP2) && currentPlayer == 2))
                 rotationInput = 1;
 
             // Appliquer la rotation

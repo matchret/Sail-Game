@@ -23,6 +23,16 @@ public class ControlCustomizationMenu : MonoBehaviour
     public TextMeshProUGUI moveRightText;
     public TextMeshProUGUI dashText;
     public TextMeshProUGUI pauseText;
+    
+    public Button moveLeftButtonP2;
+    public Button moveRightButtonP2;
+    public Button dashButtonP2;
+    public Button pauseButtonP2;
+
+    public TextMeshProUGUI moveLeftTextP2;
+    public TextMeshProUGUI moveRightTextP2;
+    public TextMeshProUGUI dashTextP2;
+    public TextMeshProUGUI pauseTextP2;
 
     private ControlManager.Action currentAction; // L'action en cours de modification
     private Button currentButton; // Le bouton en attente d'une touche
@@ -34,6 +44,12 @@ public class ControlCustomizationMenu : MonoBehaviour
         moveRightButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveRight, moveRightText));
         dashButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.Dash, dashText));
         pauseButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.Pause, pauseText));
+        
+        moveLeftButtonP2.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveLeftP2, moveLeftTextP2));
+        moveRightButtonP2.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveRightP2, moveRightTextP2));
+        dashButtonP2.onClick.AddListener(() => StartRebinding(ControlManager.Action.DashP2, dashTextP2));
+        pauseButtonP2.onClick.AddListener(() => StartRebinding(ControlManager.Action.PauseP2, pauseTextP2));
+
 
         // Boutons pour navigation
         returnButton.onClick.AddListener(BackToPauseMenu);
@@ -92,6 +108,11 @@ public class ControlCustomizationMenu : MonoBehaviour
         moveRightText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRight).ToString();
         dashText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.Dash).ToString();
         pauseText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.Pause).ToString();
+        
+        moveLeftTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveLeftP2).ToString();
+        moveRightTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRightP2).ToString();
+        dashTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.DashP2).ToString();
+        pauseTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.PauseP2).ToString();
     }
 
     public void BackToPauseMenu()
