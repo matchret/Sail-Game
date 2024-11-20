@@ -118,8 +118,7 @@ public class ControlManager : MonoBehaviour
         }
         PlayerPrefs.Save();
     }
-
-    // Charger les bindings depuis PlayerPrefs
+    
     public void LoadBindings()
     {
         foreach (var action in defaultKeyBindings.Keys)
