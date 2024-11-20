@@ -28,11 +28,6 @@ public class GameLoopManager : MonoBehaviour
     private float currentForce = 0f; // Force actuelle
     private bool isPaused = false;
 
-    private string player1Name = GameData.Player1Name;
-    private string player2Name = GameData.Player2Name;
-    private string player1Type = GameData.Player1Type;
-    private string player2Type = GameData.Player2Type;
-
     public GameObject controlCustomizationMenu;
 
     void Start()
@@ -119,10 +114,18 @@ public class GameLoopManager : MonoBehaviour
         {
             rb1.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         }
+        if (GameData.Player1Type == "Ai")
+        {
+            player1Boat.AddComponent<AIScript>();
+        }
 
         if (rb2 != null)
         {
             rb2.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        }
+        if (GameData.Player2Type == "Ai")
+        {
+            player2Boat.AddComponent<AIScript>();
         }
     }
 
@@ -138,15 +141,24 @@ public class GameLoopManager : MonoBehaviour
     {
         GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
 
-        // Récupérer les inputs depuis le ControlManager
-        float rotationInput = 0;
-        if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft))
-            rotationInput = -1;
-        else if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight))
-            rotationInput = 1;
 
-        // Appliquer la rotation
-        activeBoat.transform.Rotate(Vector3.up * rotationInput * rotationSpeed * Time.deltaTime);
+        bool isCurrentPlayerAI = (currentPlayer == 1 && GameData.Player1Type == "Ai") ||
+                                 (currentPlayer == 2 && GameData.Player2Type == "Ai");
+
+        if (isCurrentPlayerAI)
+        {
+            activeBoat.GetComponent<AIScript>().RotateTowardsCoin();    
+        }
+        else {
+            float rotationInput = 0;
+            if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft))
+                rotationInput = -1;
+            else if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight))
+                rotationInput = 1;
+
+            // Appliquer la rotation
+            activeBoat.transform.Rotate(Vector3.up * rotationInput * rotationSpeed * Time.deltaTime);
+        }
     }
 
     void StartForceSelection()
