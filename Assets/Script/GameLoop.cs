@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -15,6 +16,8 @@ public class GameLoopManager : MonoBehaviour
     public float cameraDistance = 5f;
     public float cameraHeight = 2f;
     public GameObject pauseMenu;
+    public GameObject gameOverCanvas; // Référence au Canvas de fin de jeu
+    public TextMeshProUGUI winnerText; // Texte pour afficher le gagnant
 
     private int currentPlayer = 1; // 1 pour joueur 1, 2 pour joueur 2
     private int player1Score = 0;
@@ -210,18 +213,33 @@ public class GameLoopManager : MonoBehaviour
     void EndGame()
     {
         isGameOver = true;
+        Time.timeScale = 0; // Arrêter le temps de jeu
 
         Debug.Log("Partie terminée !");
         Debug.Log($"Score Joueur 1 : {player1Score}");
         Debug.Log($"Score Joueur 2 : {player2Score}");
 
+        // Afficher le gagnant
         if (player1Score > player2Score)
+        {
+            winnerText.text = "Joueur 1 gagne!";
             Debug.Log("Joueur 1 gagne !");
+        }
         else if (player2Score > player1Score)
+        {
+            winnerText.text = "Joueur 2 gagne!";
             Debug.Log("Joueur 2 gagne !");
+        }
         else
+        {
+            winnerText.text = "Match nul!";
             Debug.Log("Match nul !");
+        }
+
+        // Activer l'écran de fin de jeu
+        gameOverCanvas.SetActive(true);
     }
+
 
     public void CoinCollected(int playerNumber, GameObject coin)
     {
