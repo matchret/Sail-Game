@@ -27,13 +27,17 @@ public class GameLoopManager : MonoBehaviour
     private bool isChargingForce = false; // Indique si la barre de force est en train de se charger
     private float currentForce = 0f; // Force actuelle
     private bool isPaused = false;
+
     private string player1Name = GameData.Player1Name;
     private string player2Name = GameData.Player2Name;
     private string player1Type = GameData.Player1Type;
     private string player2Type = GameData.Player2Type;
 
+    public GameObject controlCustomizationMenu;
+
     void Start()
     {
+        
         Debug.Log("Le jeu commence !");
         SetupBoats();
         StartPlayerTurn();
@@ -43,29 +47,35 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (isGameOver) return;
+
+        if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Pause))
         {
             TogglePause();
         }
-
-        if (isPaused || isGameOver) return;
-
-        
 
         if (isWaitingForAction)
         {
             HandlePlayerRotation();
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Dash))
             {
-                if (!isChargingForce) StartForceSelection(); // Début de la charge de force
-                else ApplyForce(); // Appliquer la force
+                if (!isChargingForce) StartForceSelection();
+                else ApplyForce();
             }
 
-            if (isChargingForce) UpdateForceBar(); // Mettre à jour la barre de force
+            if (isChargingForce) UpdateForceBar();
         }
 
         UpdateCameraPosition();
+    }
+    
+    
+    public void OpenControlCustomizationMenu()
+    {
+        Time.timeScale = 0; // Mettre le jeu en pause
+        controlCustomizationMenu.SetActive(true); // Activer le menu de personnalisation
+        pauseMenu.SetActive(false); // Désactiver le menu de pause
     }
     
     void TogglePause()
@@ -128,8 +138,12 @@ public class GameLoopManager : MonoBehaviour
     {
         GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
 
-        // Récupérer l'input pour la rotation
-        float rotationInput = Input.GetKey(KeyCode.A) ? -1 : (Input.GetKey(KeyCode.D) ? 1 : 0);
+        // Récupérer les inputs depuis le ControlManager
+        float rotationInput = 0;
+        if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft))
+            rotationInput = -1;
+        else if (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight))
+            rotationInput = 1;
 
         // Appliquer la rotation
         activeBoat.transform.Rotate(Vector3.up * rotationInput * rotationSpeed * Time.deltaTime);
