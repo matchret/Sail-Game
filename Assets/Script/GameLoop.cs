@@ -146,16 +146,63 @@ public class GameLoopManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log($"Collision DU GAMELOOOOP détectée avec : {other.name}");
+
+        Debug.Log($"Collision détectée avec : {other.name}");
         if (other.CompareTag("Coin"))
         {
             Debug.Log($"Joueur {currentPlayer} a collecté une pièce !");
-            
+
             // Ajouter au score du joueur actif
-            if (currentPlayer == 1) player1Score++;
-            else player2Score++;
+            if (currentPlayer == 1)
+            {
+                player1Score++;
+            }
+            else
+            {
+                player2Score++;
+            }
 
             // Détruire la pièce
             Destroy(other.gameObject);
+
+            Debug.Log($"Score actuel - Joueur 1 : {player1Score}, Joueur 2 : {player2Score}");
         }
     }
+
+    
+    public int GetPlayerScore(int player)
+    {
+        if (player == 1)
+            return player1Score;
+        else if (player == 2)
+            return player2Score;
+
+        return 0;
+    }
+    
+    public void CoinCollected(int playerNumber, GameObject coin)
+    {
+        // Mise à jour des scores
+        if (playerNumber == 1)
+        {
+            player1Score++;
+        }
+        else if (playerNumber == 2)
+        {
+            player2Score++;
+        }
+
+        // Détruire la pièce collectée
+        Destroy(coin);
+
+        Debug.Log($"Scores - Joueur 1 : {player1Score}, Joueur 2 : {player2Score}");
+
+        // Vérifiez si toutes les pièces ont été collectées
+        if (CheckIfGameOver())
+        {
+            EndGame();
+        }
+    }
+
 }

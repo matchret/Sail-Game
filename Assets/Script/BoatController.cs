@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class BoatController : MonoBehaviour
 {
-    public int playerScore = 0; // Score du joueur
+    public GameLoopManager gameLoopManager; // Référence au GameLoopManager
+    public int playerNumber; // 1 pour le joueur 1, 2 pour le joueur 2
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Coin"))
         {
-            Debug.Log("Pièce collectée !");
-            playerScore++; // Augmenter le score
-            Destroy(other.gameObject); // Détruire la pièce
+            Debug.Log($"Joueur {playerNumber} a collecté une pièce !");
+            gameLoopManager.CoinCollected(playerNumber, other.gameObject);
         }
     }
 }
