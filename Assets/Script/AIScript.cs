@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AIScript : MonoBehaviour
 {
-    public float rotationSpeed = 5f;
+    public float rotationSpeed = 100f;
     private GameObject closestCoin;
 
 
@@ -31,12 +31,28 @@ public class AIScript : MonoBehaviour
     {
         FindClosestCoin();
         // Get direction to the closest coin
-        Vector3 direction = (closestCoin.transform.position - transform.position).normalized;
+        Vector3 direction = (closestCoin.transform.position - transform.position);
+
+        // Ignore the vertical component
+        direction.y = 0;
+        direction = direction.normalized;
 
         // Calculate the target rotation
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
         // Smoothly rotate toward the coin
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+    }
+
+    public bool MoveTowardsCoin(float currentForce)
+    {
+        float distanceToCoin = Vector3.Distance(transform.position, closestCoin.transform.position);
+        Debug.Log(currentForce);
+        if (34f < currentForce)
+        {
+            return true;
+        }
+        return false;
+
     }
 }

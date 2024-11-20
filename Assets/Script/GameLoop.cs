@@ -52,11 +52,25 @@ public class GameLoopManager : MonoBehaviour
         if (isWaitingForAction)
         {
             HandlePlayerRotation();
-
-            if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Dash))
+            //Ai Apply force
+            bool isAIPlayer = (currentPlayer == 1 && GameData.Player1Type == "Ai") ||
+                      (currentPlayer == 2 && GameData.Player2Type == "Ai");
+            if (isAIPlayer)
             {
                 if (!isChargingForce) StartForceSelection();
-                else ApplyForce();
+                GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
+                if (activeBoat.GetComponent<AIScript>().MoveTowardsCoin(currentForce))
+                {
+                    ApplyForce();
+                }
+            }
+            //If Human Player
+            else {
+                if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Dash))
+                {
+                    if (!isChargingForce) StartForceSelection();
+                    else ApplyForce();
+                }
             }
 
             if (isChargingForce) UpdateForceBar();
@@ -147,7 +161,9 @@ public class GameLoopManager : MonoBehaviour
 
         if (isCurrentPlayerAI)
         {
-            activeBoat.GetComponent<AIScript>().RotateTowardsCoin();    
+            isWaitingForAction = false;
+            activeBoat.GetComponent<AIScript>().RotateTowardsCoin();
+            isWaitingForAction = true;
         }
         else {
             float rotationInput = 0;
