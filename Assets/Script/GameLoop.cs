@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameLoopManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class GameLoopManager : MonoBehaviour
     public float forceChargeSpeed = 50f; // Vitesse de chargement de la force
     public float cameraDistance = 5f;
     public float cameraHeight = 2f;
+    public GameObject pauseMenu;
 
     private int currentPlayer = 1; // 1 pour joueur 1, 2 pour joueur 2
     private int player1Score = 0;
@@ -21,6 +23,7 @@ public class GameLoopManager : MonoBehaviour
     private bool isGameOver = false; // Flag pour savoir si le jeu est terminé
     private bool isChargingForce = false; // Indique si la barre de force est en train de se charger
     private float currentForce = 0f; // Force actuelle
+    private bool isPaused = false;
 
     void Start()
     {
@@ -28,11 +31,19 @@ public class GameLoopManager : MonoBehaviour
         SetupBoats();
         StartPlayerTurn();
         forceBar.gameObject.SetActive(false); // Cacher la barre de force au début
+        pauseMenu.SetActive(false);
     }
 
     void Update()
     {
-        if (isGameOver) return;
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TogglePause();
+        }
+
+        if (isPaused || isGameOver) return;
+
+        
 
         if (isWaitingForAction)
         {
@@ -48,6 +59,38 @@ public class GameLoopManager : MonoBehaviour
         }
 
         UpdateCameraPosition();
+    }
+    
+    void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0; // Arrête le temps
+            pauseMenu.SetActive(true); // Affiche le menu de pause
+        }
+        else
+        {
+            Time.timeScale = 1; // Relance le temps
+            pauseMenu.SetActive(false); // Cache le menu de pause
+        }
+
+        Debug.Log($"Pause : {isPaused}");
+    }
+    
+    public void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1; // Relance le temps
+        pauseMenu.SetActive(false); // Cache le menu de pause
+        Debug.Log("Jeu repris !");
+    }
+    
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1; // Assurez-vous que le temps est réinitialisé
+        SceneManager.LoadScene("MainMenu"); 
     }
 
     void SetupBoats()
