@@ -1,70 +1,109 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections; 
+using System.Collections;
+using TMPro;
 
 public class ControlCustomizationMenu : MonoBehaviour
 {
     public GameObject customizationPanel; // Le menu de personnalisation
-    public Button returnButton;
-    public Button resetButton;
-    public Transform controlListContainer; // Conteneur pour les contrôles
-    public GameObject controlItemPrefab; // Préfabriqué pour un élément de la liste des contrôles
     public GameObject pauseMenu; // Référence au menu de pause
-    public GameObject controlCustomizationMenu; // Référence à ce menu
+
+    // Boutons pour chaque action
+    public Button moveLeftButton;
+    public Button moveRightButton;
+    public Button dashButton;
+    public Button pauseButton;
+
+    // Boutons pour navigation
+    public Button returnButton; // Bouton pour revenir au menu pause
+    public Button resetButton; // Bouton pour réinitialiser les contrôles
+
+    // Textes des boutons pour afficher les touches actuelles
+    public TextMeshProUGUI moveLeftText;
+    public TextMeshProUGUI moveRightText;
+    public TextMeshProUGUI dashText;
+    public TextMeshProUGUI pauseText;
+
+    private ControlManager.Action currentAction; // L'action en cours de modification
+    private Button currentButton; // Le bouton en attente d'une touche
 
     void Start()
     {
-        returnButton.onClick.AddListener(CloseMenu);
+        // Assignez les actions des boutons
+        moveLeftButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveLeft, moveLeftText));
+        moveRightButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveRight, moveRightText));
+        dashButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.Dash, dashText));
+        pauseButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.Pause, pauseText));
+
+        // Boutons pour navigation
+        returnButton.onClick.AddListener(BackToPauseMenu);
         resetButton.onClick.AddListener(ResetToDefault);
 
-        // Générer la liste des contrôles
-        foreach (var action in System.Enum.GetValues(typeof(ControlManager.Action)))
+        // Initialiser les textes des boutons
+        UpdateButtonLabels();
+    }
+
+    public void StartRebinding(ControlManager.Action action, TextMeshProUGUI buttonText)
+    {
+        currentAction = action;
+        currentButton = null; // Pas nécessaire ici, car nous utilisons `buttonText` directement
+        buttonText.text = "Press any key..."; // Affiche "Press any key..." pendant la réassignation
+        StartCoroutine(WaitForKeyPress(buttonText));
+    }
+
+    IEnumerator WaitForKeyPress(TextMeshProUGUI buttonText)
+    {
+        while (!Input.anyKeyDown) // Attendre qu'une touche soit pressée
         {
-            var item = Instantiate(controlItemPrefab, controlListContainer);
-            var actionName = item.transform.Find("ActionName").GetComponent<Text>();
-            var keyButton = item.transform.Find("KeyButton").GetComponent<Button>();
-            actionName.text = action.ToString();
-            keyButton.GetComponentInChildren<Text>().text = ControlManager.Instance.GetKeyBinding((ControlManager.Action)action).ToString();
-
-            keyButton.onClick.AddListener(() => StartRebinding((ControlManager.Action)action, keyButton));
+            yield return null;
         }
-    }
-    
-    public void BackToPauseMenu()
-    {
-        controlCustomizationMenu.SetActive(false); // Désactiver ce menu
-        pauseMenu.SetActive(true); // Réactiver le menu de pause
-    }
 
-    void StartRebinding(ControlManager.Action action, Button keyButton)
-    {
-        StartCoroutine(WaitForKeyPress(action, keyButton));
-    }
-
-    IEnumerator WaitForKeyPress(ControlManager.Action action, Button keyButton)
-    {
-        keyButton.GetComponentInChildren<Text>().text = "Press any key...";
-        while (!Input.anyKeyDown) yield return null;
-
+        KeyCode pressedKey = KeyCode.None;
         foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
         {
             if (Input.GetKeyDown(key))
             {
-                ControlManager.Instance.SetKeyBinding(action, key);
-                keyButton.GetComponentInChildren<Text>().text = key.ToString();
+                pressedKey = key;
                 break;
+            }
+        }
+
+        if (pressedKey != KeyCode.None)
+        {
+            // Vérifiez si la touche est déjà assignée
+            if (ControlManager.Instance.IsKeyAlreadyAssigned(pressedKey))
+            {
+                buttonText.text = "Already Taken"; // Affiche "Already Taken" si la touche est déjà utilisée
+                yield return new WaitForSeconds(1f);
+                UpdateButtonLabels(); // Réinitialise l'affichage des touches
+            }
+            else
+            {
+                // Assigner la nouvelle touche
+                ControlManager.Instance.SetKeyBinding(currentAction, pressedKey);
+                buttonText.text = pressedKey.ToString(); // Met à jour le texte avec la nouvelle touche
             }
         }
     }
 
-    void ResetToDefault()
+    void UpdateButtonLabels()
     {
-        ControlManager.Instance.LoadBindings(); // Recharge les bindings par défaut
+        moveLeftText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveLeft).ToString();
+        moveRightText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRight).ToString();
+        dashText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.Dash).ToString();
+        pauseText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.Pause).ToString();
     }
 
-    void CloseMenu()
+    public void BackToPauseMenu()
     {
-        customizationPanel.SetActive(false);
-        Time.timeScale = 1; // Reprendre le jeu
+        customizationPanel.SetActive(false); // Désactiver ce menu
+        pauseMenu.SetActive(true); // Réactiver le menu de pause
+    }
+
+    public void ResetToDefault()
+    {
+        ControlManager.Instance.ResetToDefaultBindings(); // Réinitialiser les bindings aux valeurs par défaut
+        UpdateButtonLabels(); // Met à jour tous les textes des boutons
     }
 }
+

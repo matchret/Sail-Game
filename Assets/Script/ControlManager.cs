@@ -81,6 +81,24 @@ public class ControlManager : MonoBehaviour
         }
         return KeyCode.None;
     }
+    
+    public bool IsKeyAlreadyAssigned(KeyCode key)
+    {
+        foreach (var binding in userKeyBindings.Values)
+        {
+            if (binding == key)
+            {
+                return true; // La touche est déjà assignée
+            }
+        }
+        return false; // La touche est disponible
+    }
+    
+    public void ResetToDefaultBindings()
+    {
+        userKeyBindings = new Dictionary<Action, KeyCode>(defaultKeyBindings); // Copier les valeurs par défaut
+        SaveBindings(); // Sauvegarder les valeurs par défaut
+    }
 
     // Sauvegarder les bindings dans PlayerPrefs
     private void SaveBindings()

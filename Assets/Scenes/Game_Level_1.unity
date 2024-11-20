@@ -2648,13 +2648,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5698d2268a234c047aaaef818d7c0d82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customizationPanel: {fileID: 0}
-  returnButton: {fileID: 0}
-  resetButton: {fileID: 0}
-  controlListContainer: {fileID: 0}
-  controlItemPrefab: {fileID: 0}
+  customizationPanel: {fileID: 730290034}
   pauseMenu: {fileID: 102764436}
-  controlCustomizationMenu: {fileID: 730290034}
+  moveLeftButton: {fileID: 1253332094}
+  moveRightButton: {fileID: 429380771}
+  dashButton: {fileID: 1681960025}
+  pauseButton: {fileID: 1495351916}
+  returnButton: {fileID: 1774670231}
+  resetButton: {fileID: 251905497}
+  moveLeftText: {fileID: 737638211}
+  moveRightText: {fileID: 975295155}
+  dashText: {fileID: 155677346}
+  pauseText: {fileID: 2125767619}
 --- !u!1 &945645990
 GameObject:
   m_ObjectHideFlags: 0
@@ -3907,7 +3912,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1253332095}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 890443453}
+        m_TargetAssemblyTypeName: ControlCustomizationMenu, Assembly-CSharp
+        m_MethodName: StartRebinding
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1253332095
 MonoBehaviour:
   m_ObjectHideFlags: 0
