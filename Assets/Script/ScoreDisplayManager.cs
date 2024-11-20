@@ -11,7 +11,7 @@ public class ScoreDisplayManager : MonoBehaviour
     void Update()
     {
         // Récupérer les scores depuis le GameLoopManager
-        player1ScoreText.text = $"Joueur 1 : {gameLoopManager.GetPlayerScore(1)}";
-        player2ScoreText.text = $"Joueur 2 : {gameLoopManager.GetPlayerScore(2)}";
+        player1ScoreText.text = $"{GameData.Player1Name} : {gameLoopManager.GetPlayerScore(1)}";
+        player2ScoreText.text = $"{GameData.Player2Name} : {gameLoopManager.GetPlayerScore(2)}";
     }
 }

@@ -27,6 +27,10 @@ public class GameLoopManager : MonoBehaviour
     private bool isChargingForce = false; // Indique si la barre de force est en train de se charger
     private float currentForce = 0f; // Force actuelle
     private bool isPaused = false;
+    private string player1Name = GameData.Player1Name;
+    private string player2Name = GameData.Player2Name;
+    private string player1Type = GameData.Player1Type;
+    private string player2Type = GameData.Player2Type;
 
     void Start()
     {
