@@ -238,6 +238,15 @@ public class GameLoopManager : MonoBehaviour
 
         // Activer l'écran de fin de jeu
         gameOverCanvas.SetActive(true);
+        
+        StartCoroutine(ReturnToMainMenuAfterDelay(4f));
+    }
+    
+    IEnumerator ReturnToMainMenuAfterDelay(float delay)
+    {
+        yield return new WaitForSecondsRealtime(delay); // Utiliser WaitForSecondsRealtime pour ignorer Time.timeScale
+        Time.timeScale = 1; // Réinitialiser le temps avant de charger une nouvelle scène
+        GoToMainMenu(); // Remplacez "MainMenu" par le nom exact de votre scène de menu principal
     }
 
 
