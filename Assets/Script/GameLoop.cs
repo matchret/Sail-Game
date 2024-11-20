@@ -8,15 +8,14 @@ public class GameLoopManager : MonoBehaviour
     public Camera mainCamera;
     public float rotationSpeed = 100f;
     public float shotForce = 10f;
-    public int maxRounds = 10;
     public float cameraDistance = 5f;
     public float cameraHeight = 2f;
 
     private int currentPlayer = 1; // 1 pour joueur 1, 2 pour joueur 2
     private int player1Score = 0;
     private int player2Score = 0;
-    private int currentRound = 1;
     private bool isWaitingForAction = true; // Le joueur peut tourner ou avancer
+    private bool isGameOver = false; // Flag pour savoir si le jeu est terminé
 
     void Start()
     {
@@ -27,6 +26,8 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
+        if (isGameOver) return;
+
         if (isWaitingForAction)
         {
             HandlePlayerRotation();
@@ -57,6 +58,8 @@ public class GameLoopManager : MonoBehaviour
 
     void StartPlayerTurn()
     {
+        if (CheckIfGameOver()) return;
+
         Debug.Log($"Tour du joueur {currentPlayer}");
         isWaitingForAction = true;
     }
@@ -93,16 +96,7 @@ public class GameLoopManager : MonoBehaviour
         // Passer au joueur suivant
         currentPlayer = currentPlayer == 1 ? 2 : 1;
 
-        // Fin de la manche ou continuer
-        if (currentPlayer == 1)
-        {
-            currentRound++;
-            if (currentRound > maxRounds)
-            {
-                EndGame();
-                yield break;
-            }
-        }
+        if (CheckIfGameOver()) yield break;
 
         StartPlayerTurn();
     }
@@ -121,8 +115,23 @@ public class GameLoopManager : MonoBehaviour
         mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, Quaternion.LookRotation(activeBoat.transform.forward), Time.deltaTime * 5f);
     }
 
+    bool CheckIfGameOver()
+    {
+        GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
+
+        if (coins.Length == 0)
+        {
+            EndGame();
+            return true;
+        }
+
+        return false;
+    }
+
     void EndGame()
     {
+        isGameOver = true;
+
         Debug.Log("Partie terminée !");
         Debug.Log($"Score Joueur 1 : {player1Score}");
         Debug.Log($"Score Joueur 2 : {player2Score}");
