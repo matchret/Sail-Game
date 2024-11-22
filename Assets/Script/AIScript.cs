@@ -6,9 +6,23 @@ public class AIScript : MonoBehaviour
 {
     public float rotationSpeed = 100f;
     private GameObject closestCoin;
+    private List<Vector3> openNodes;
+    void Start()
+    {
+        // Reference the WaterGridGenerator in the scene
+        WaterGridGenerator gridGenerator = FindObjectOfType<WaterGridGenerator>();
+
+        if (gridGenerator == null)
+        {
+            Debug.LogError("No WaterGridGenerator found in the scene!");
+        }
+        openNodes = gridGenerator.openNodes;
 
 
-     void FindClosestCoin()
+    }
+
+
+    void FindClosestCoin()
     {
         GameObject[] coins = GameObject.FindGameObjectsWithTag("Coin");
         float closestDistance = Mathf.Infinity;
