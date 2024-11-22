@@ -40,14 +40,14 @@ public class WaterGridGenerator : MonoBehaviour
             Debug.Log($"Top Left: {topLeft}");
 
             // Generate the grid and find open nodes
-            GenerateGrid(bottomLeft, bottomRight, topLeft);
+            DrawGenerateGrid(bottomLeft, bottomRight, topLeft);
         }
         else
         {
             Debug.LogError("No valid meshes found to calculate bounds!");
         }
 
-        ConnectNodes();
+        ConnectNodes(10);
 
 
     }
@@ -58,6 +58,14 @@ public class WaterGridGenerator : MonoBehaviour
         foreach (Vector3 node in openNodes)
         {
             Debug.DrawLine(node, node + Vector3.up * 5f, Color.blue); // Draw a 5-unit upward line
+        }
+
+        foreach (PathNode node in graphNodes)
+        {
+            foreach (PathNode neighbor in node.neighbors)
+            {
+                Debug.DrawLine(node.position, neighbor.position, Color.cyan);
+            }
         }
     }
 
@@ -91,7 +99,7 @@ public class WaterGridGenerator : MonoBehaviour
         return bounds;
     }
 
-    void GenerateGrid(Vector3 bottomLeft, Vector3 bottomRight, Vector3 topLeft)
+    void DrawGenerateGrid(Vector3 bottomLeft, Vector3 bottomRight, Vector3 topLeft)
     {
         // Calculate the grid spacing
         Vector3 horizontalStep = (bottomRight - bottomLeft) / gridResolutionX;
@@ -160,6 +168,8 @@ public class WaterGridGenerator : MonoBehaviour
 
     void ConnectNodes(float connectionRadius = 5f)
     {
+        graphNodes.Clear(); // Vider la liste avant de la remplir
+
         // Create PathNodes for each open node
         foreach (Vector3 openNodePosition in openNodes)
         {
@@ -181,4 +191,110 @@ public class WaterGridGenerator : MonoBehaviour
 
         Debug.Log($"Graph created with {graphNodes.Count} nodes.");
     }
+
+    public List<Vector3> FindPath(Vector3 startPosition, Vector3 targetPosition)
+    {
+        // Réinitialiser les coûts des nœuds
+        foreach (PathNode node in graphNodes)
+        {
+            node.gCost = Mathf.Infinity;
+            node.hCost = 0;
+            node.parent = null;
+        }
+
+        PathNode startNode = FindClosestNode(startPosition);
+        PathNode targetNode = FindClosestNode(targetPosition);
+
+        if (startNode == null || targetNode == null)
+        {
+            Debug.LogError("Start or target node is invalid!");
+            return null;
+        }
+
+        List<PathNode> openSet = new List<PathNode> { startNode };
+        HashSet<PathNode> closedSet = new HashSet<PathNode>();
+
+        startNode.gCost = 0;
+        startNode.hCost = Vector3.Distance(startNode.position, targetNode.position);
+
+        while (openSet.Count > 0)
+        {
+            // Get the node with the lowest fCost
+            PathNode currentNode = openSet[0];
+            foreach (PathNode node in openSet)
+            {
+                if (node.fCost < currentNode.fCost || (node.fCost == currentNode.fCost && node.hCost < currentNode.hCost))
+                {
+                    currentNode = node;
+                }
+            }
+
+            openSet.Remove(currentNode);
+            closedSet.Add(currentNode);
+
+            // If we've reached the target node, reconstruct the path
+            if (currentNode == targetNode)
+            {
+                return ReconstructPath(targetNode);
+            }
+
+            // Evaluate neighbors
+            foreach (PathNode neighbor in currentNode.neighbors)
+            {
+                if (closedSet.Contains(neighbor))
+                {
+                    continue;
+                }
+
+                float tentativeGCost = currentNode.gCost + Vector3.Distance(currentNode.position, neighbor.position);
+                if (tentativeGCost < neighbor.gCost)
+                {
+                    neighbor.gCost = tentativeGCost;
+                    neighbor.hCost = Vector3.Distance(neighbor.position, targetNode.position);
+                    neighbor.parent = currentNode;
+
+                    if (!openSet.Contains(neighbor))
+                    {
+                        openSet.Add(neighbor);
+                    }
+                }
+            }
+        }
+
+        return null; // Path not found
+    }
+
+    List<Vector3> ReconstructPath(PathNode endNode)
+    {
+        List<Vector3> path = new List<Vector3>();
+        PathNode currentNode = endNode;
+
+        while (currentNode != null)
+        {
+            path.Add(currentNode.position);
+            currentNode = currentNode.parent;
+        }
+
+        path.Reverse(); // Reverse to get the path from start to end
+        return path;
+    }
+
+    PathNode FindClosestNode(Vector3 position)
+    {
+        PathNode closestNode = null;
+        float closestDistance = Mathf.Infinity;
+
+        foreach (PathNode node in graphNodes)
+        {
+            float distance = Vector3.Distance(position, node.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestNode = node;
+            }
+        }
+
+        return closestNode;
+    }
+   
 }
