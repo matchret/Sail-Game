@@ -27,6 +27,13 @@ public class GameLoopManager : MonoBehaviour
     private bool isChargingForce = false; // Indique si la barre de force est en train de se charger
     private float currentForce = 0f; // Force actuelle
     private bool isPaused = false;
+    
+    //simulation axis
+    private float axisValue =0f;
+    private float deadZone = 0.1f;
+    private float gravity = 2f;
+    private float sensitivity = 3f;
+    private float maxValue = 1f;
 
     public GameObject controlCustomizationMenu;
 
@@ -169,15 +176,63 @@ public class GameLoopManager : MonoBehaviour
             isWaitingForAction = true;
         }
         else {
-            float rotationInput = 0;
-            if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeftP2) && currentPlayer == 2))
-                rotationInput = -1;
-            else if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRightP2) && currentPlayer == 2))
-                rotationInput = 1;
+            //float rotationInput = 0;
+            //if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeft) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveLeftP2) && currentPlayer == 2))
+            //    rotationInput = -1;
+            //else if ((ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRight) && currentPlayer == 1) || (ControlManager.Instance.IsActionPressed(ControlManager.Action.MoveRightP2) && currentPlayer == 2))
+            //    rotationInput = 1;
 
-            // Appliquer la rotation
+            float rotationInput;
+            if (currentPlayer == 1)
+            {
+                rotationInput =
+                    SimulateAxis(ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveLeft),
+                        ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRight));
+                // Appliquer la rotation
+            }
+            else
+            {
+                rotationInput = SimulateAxis(
+                    ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveLeftP2),
+                    ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRightP2));
+                // Appliquer la rotation
+            }
             activeBoat.transform.Rotate(Vector3.up * rotationInput * rotationSpeed * Time.deltaTime);
         }
+    }
+    
+    float SimulateAxis(KeyCode leftKey, KeyCode rightKey)
+    {
+        float targetValue = 0f;
+
+        if (Input.GetKey(leftKey))
+        {
+            targetValue -= maxValue; // Déplacement vers la gauche (valeur négative)
+        }
+
+        if (Input.GetKey(rightKey))
+        {
+            targetValue += maxValue; // Déplacement vers la droite (valeur positive)
+        }
+        
+        if (Mathf.Abs(targetValue) < deadZone && Mathf.Abs(axisValue) < deadZone)
+        {
+            return 0f;
+        }
+        
+        if (targetValue == 0)
+        {
+            // Retour vers zéro avec la gravité
+            axisValue = Mathf.MoveTowards(axisValue, 0, gravity * Time.deltaTime);
+        }
+        else
+        {
+            // Approcher la cible avec la sensibilité
+            axisValue = Mathf.MoveTowards(axisValue, targetValue, sensitivity * Time.deltaTime);
+        }
+        
+
+        return Mathf.Clamp(axisValue, -1, 1); // Limiter l'axe entre -1 et 1
     }
 
     void StartForceSelection()
