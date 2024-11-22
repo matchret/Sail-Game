@@ -37,8 +37,13 @@ public class ControlCustomizationMenu : MonoBehaviour
     private ControlManager.Action currentAction; // L'action en cours de modification
     private Button currentButton; // Le bouton en attente d'une touche
 
+    public Slider sensitivityP1;
+    public Slider sensitivityP2;
+
     void Start()
     {
+        sensitivityP1.value = ControlManager.Instance.sensitivityP1;
+        sensitivityP2.value = ControlManager.Instance.sensitivityP2;
         // Assignez les actions des boutons
         moveLeftButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveLeft, moveLeftText));
         moveRightButton.onClick.AddListener(() => StartRebinding(ControlManager.Action.MoveRight, moveRightText));
@@ -50,6 +55,8 @@ public class ControlCustomizationMenu : MonoBehaviour
         dashButtonP2.onClick.AddListener(() => StartRebinding(ControlManager.Action.DashP2, dashTextP2));
         pauseButtonP2.onClick.AddListener(() => StartRebinding(ControlManager.Action.PauseP2, pauseTextP2));
 
+        sensitivityP1.onValueChanged.AddListener(OnSensitivityChangedP1);
+        sensitivityP2.onValueChanged.AddListener(OnSensitivityChangedP2);
 
         // Boutons pour navigation
         returnButton.onClick.AddListener(BackToPauseMenu);
@@ -57,6 +64,20 @@ public class ControlCustomizationMenu : MonoBehaviour
 
         // Initialiser les textes des boutons
         UpdateButtonLabels();
+    }
+    
+    void OnSensitivityChangedP1(float newValue)
+    {
+        // Sauvegarder la nouvelle sensibilité dans le ControlManager
+        ControlManager.Instance.sensitivityP1 = newValue;
+        ControlManager.Instance.SaveBindings();
+    }
+    
+    void OnSensitivityChangedP2(float newValue)
+    {
+        // Sauvegarder la nouvelle sensibilité dans le ControlManager
+        ControlManager.Instance.sensitivityP2 = newValue;
+        ControlManager.Instance.SaveBindings();
     }
 
     public void StartRebinding(ControlManager.Action action, TextMeshProUGUI buttonText)
@@ -113,6 +134,8 @@ public class ControlCustomizationMenu : MonoBehaviour
         moveRightTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRightP2).ToString();
         dashTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.DashP2).ToString();
         pauseTextP2.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.PauseP2).ToString();
+        sensitivityP1.value = ControlManager.Instance.sensitivityP1;
+        sensitivityP2.value = ControlManager.Instance.sensitivityP2;
     }
 
     public void BackToPauseMenu()

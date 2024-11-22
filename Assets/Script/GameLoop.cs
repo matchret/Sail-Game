@@ -32,7 +32,6 @@ public class GameLoopManager : MonoBehaviour
     private float axisValue =0f;
     private float deadZone = 0.1f;
     private float gravity = 2f;
-    private float sensitivity = 3f;
     private float maxValue = 1f;
 
     public GameObject controlCustomizationMenu;
@@ -227,8 +226,17 @@ public class GameLoopManager : MonoBehaviour
         }
         else
         {
-            // Approcher la cible avec la sensibilité
-            axisValue = Mathf.MoveTowards(axisValue, targetValue, sensitivity * Time.deltaTime);
+            if (currentPlayer == 1)
+            {
+                // Approcher la cible avec la sensibilité
+                axisValue = Mathf.MoveTowards(axisValue, targetValue,
+                    ControlManager.Instance.sensitivityP1 * Time.deltaTime);
+            }
+            else
+            {
+                axisValue = Mathf.MoveTowards(axisValue, targetValue,
+                    ControlManager.Instance.sensitivityP2 * Time.deltaTime);  
+            }
         }
         
 

@@ -6,6 +6,10 @@ public class ControlManager : MonoBehaviour
 {
     public static ControlManager Instance;
 
+    public float sensitivityDefault = 2.5f;
+    public float sensitivityP1 = 2.5f;
+    public float sensitivityP2 = 2.5f;
+
     // Définition des actions
     public enum Action
     {
@@ -129,12 +133,14 @@ public class ControlManager : MonoBehaviour
     public void ResetToDefaultBindings()
     {
         
-        userKeyBindings = new Dictionary<Action, KeyCode>(defaultKeyBindings); // Copier les valeurs par défaut
+        userKeyBindings = new Dictionary<Action, KeyCode>(defaultKeyBindings);
+        sensitivityP1 = sensitivityDefault;
+        sensitivityP2 = sensitivityDefault;
         SaveBindings(); // Sauvegarder les valeurs par défaut
     }
 
     // Sauvegarder les bindings dans PlayerPrefs
-    private void SaveBindings()
+    public void SaveBindings()
     {
         foreach (var binding in userKeyBindings)
         {
@@ -149,6 +155,8 @@ public class ControlManager : MonoBehaviour
             }
             
         }
+        PlayerPrefs.SetString("sensP1", sensitivityP1.ToString());
+        PlayerPrefs.SetString("sensP2", sensitivityP2.ToString());
         PlayerPrefs.Save();
     }
     
@@ -161,6 +169,10 @@ public class ControlManager : MonoBehaviour
             {
                 userKeyBindings[action] = key;
             }
+            
+            sensitivityP1 = float.Parse(PlayerPrefs.GetString("sensP1", sensitivityDefault.ToString()));
+            sensitivityP2 = float.Parse(PlayerPrefs.GetString("sensP2", sensitivityDefault.ToString()));
+            Debug.Log($"Sensibilité P1 : {sensitivityP1}, Sensibilité P2 : {sensitivityP2}");
         }
     }
 }
