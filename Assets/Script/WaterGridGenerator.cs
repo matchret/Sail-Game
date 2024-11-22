@@ -47,7 +47,7 @@ public class WaterGridGenerator : MonoBehaviour
             Debug.LogError("No valid meshes found to calculate bounds!");
         }
 
-        ConnectNodes(10);
+        ConnectNodes(8);
 
 
     }

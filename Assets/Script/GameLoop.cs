@@ -65,22 +65,23 @@ public class GameLoopManager : MonoBehaviour
             bool isAIPlayer = (currentPlayer == 1 && GameData.Player1Type == "Ai") ||
                       (currentPlayer == 2 && GameData.Player2Type == "Ai");
             if (isAIPlayer) 
-            {/*
+            {
                 if (!isChargingForce) StartForceSelection();
                 GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
                 AIScript aiScript = activeBoat.GetComponent<AIScript>();
+
                 if (aiScript != null)
                 {
                     aiScript.PerformTurn();
 
-                    // Fin du tour après un délai si nécessaire
-                    StartCoroutine(EndTurnAfterDelay(2f));
+                   if (activeBoat.GetComponent<BoatController>().MoveTowardsTarget(currentForce))
+                    {
+                        ApplyForce();
+                    }
 
-                   activeBoat.GetComponent<BoatController>().MoveTowardsTarget(currentForce);
-
-                    isWaitingForAction = false;
+                  
                 }
-                */
+                
             }
             //If Human Player
             else {
