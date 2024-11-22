@@ -32,10 +32,12 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
-        
         Debug.Log("Le jeu commence !");
         SetupBoats();
         StartPlayerTurn();
+        ControlManager.Instance.IsAPlayerMouse();
+
+
         forceBar.gameObject.SetActive(false); // Cacher la barre de force au début
         pauseMenu.SetActive(false);
     }

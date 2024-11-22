@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ControlManager : MonoBehaviour
@@ -81,6 +82,28 @@ public class ControlManager : MonoBehaviour
         SaveBindings();
     }
 
+    public void IsAPlayerMouse()
+    {
+        if (GameData.Player1Mouse == true)
+        {
+            LoadBindings();
+            SetKeyBinding(Action.MoveLeft, KeyCode.Mouse0);
+            SetKeyBinding(Action.MoveRight, KeyCode.Mouse1);
+            SetKeyBinding(Action.Dash, KeyCode.Mouse2);
+        }
+        else if (GameData.Player2Mouse == true)
+        {
+            LoadBindings();
+            SetKeyBinding(Action.MoveLeftP2, KeyCode.Mouse0);
+            SetKeyBinding(Action.MoveRightP2, KeyCode.Mouse1);
+            SetKeyBinding(Action.DashP2, KeyCode.Mouse2);
+        }
+        else
+        {
+            LoadBindings();
+        }
+    }
+
     // Récupérer la touche actuelle assignée à une action
     public KeyCode GetKeyBinding(Action action)
     {
@@ -105,6 +128,7 @@ public class ControlManager : MonoBehaviour
     
     public void ResetToDefaultBindings()
     {
+        
         userKeyBindings = new Dictionary<Action, KeyCode>(defaultKeyBindings); // Copier les valeurs par défaut
         SaveBindings(); // Sauvegarder les valeurs par défaut
     }
@@ -114,7 +138,16 @@ public class ControlManager : MonoBehaviour
     {
         foreach (var binding in userKeyBindings)
         {
-            PlayerPrefs.SetString(binding.Key.ToString(), binding.Value.ToString());
+
+            if (binding.Value == KeyCode.Mouse0 || binding.Value == KeyCode.Mouse1 || binding.Value == KeyCode.Mouse2 || binding.Value == KeyCode.Mouse3)
+            {
+              //PlayerPrefs.SetString(binding.Key.ToString(), defaultKeyBindings.GetValueOrDefault(binding.Key).ToString());  
+            }
+            else
+            {
+                PlayerPrefs.SetString(binding.Key.ToString(), binding.Value.ToString());  
+            }
+            
         }
         PlayerPrefs.Save();
     }

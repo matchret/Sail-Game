@@ -8,4 +8,6 @@ public static class GameData
     public static string Player2Name;
     public static string Player1Type;
     public static string Player2Type;
+    public static bool Player1Mouse;
+    public static bool Player2Mouse;
 }

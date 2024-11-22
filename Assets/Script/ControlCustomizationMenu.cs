@@ -102,7 +102,7 @@ public class ControlCustomizationMenu : MonoBehaviour
         }
     }
 
-    void UpdateButtonLabels()
+    public void UpdateButtonLabels()
     {
         moveLeftText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveLeft).ToString();
         moveRightText.text = ControlManager.Instance.GetKeyBinding(ControlManager.Action.MoveRight).ToString();
