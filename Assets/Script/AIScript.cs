@@ -116,7 +116,7 @@ public class AIScript : MonoBehaviour
         FindNextCoin();
         Vector3 targetnode;
 
-       if (10f > Vector3.Distance(currentTargetCoin.transform.position, transform.position)){
+       if (50f > Vector3.Distance(currentTargetCoin.transform.position, transform.position)){
             targetnode = currentTargetCoin.transform.position;
         }
         else {
