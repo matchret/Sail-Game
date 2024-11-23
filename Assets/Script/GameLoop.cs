@@ -134,7 +134,7 @@ public class GameLoopManager : MonoBehaviour
     
     public void GoToMainMenu()
     {
-        Time.timeScale = 1; // Assurez-vous que le temps est réinitialisé
+        Time.timeScale = 1; 
         SceneManager.LoadScene("MainMenu"); 
     }
 
@@ -364,9 +364,9 @@ public class GameLoopManager : MonoBehaviour
     
     IEnumerator ReturnToMainMenuAfterDelay(float delay)
     {
-        yield return new WaitForSecondsRealtime(delay); // Utiliser WaitForSecondsRealtime pour ignorer Time.timeScale
-        Time.timeScale = 1; // Réinitialiser le temps avant de charger une nouvelle scène
-        GoToMainMenu(); // Remplacez "MainMenu" par le nom exact de votre scène de menu principal
+        yield return new WaitForSecondsRealtime(delay); 
+        Time.timeScale = 1; 
+        GoToMainMenu(); 
     }
 
 

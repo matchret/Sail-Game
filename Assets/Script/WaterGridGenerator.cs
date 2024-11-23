@@ -147,7 +147,7 @@ public class WaterGridGenerator : MonoBehaviour
         if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, 150f))
         {
             // Check if the hit point is not on the water surface
-            if (!hit.collider.CompareTag("Water")) // Assuming water has the "Water" tag
+            if (!hit.collider.CompareTag("Water")) 
             {
                 return true; // Obstructed
             }
@@ -194,7 +194,7 @@ public class WaterGridGenerator : MonoBehaviour
 
     public List<Vector3> FindPath(Vector3 startPosition, Vector3 targetPosition)
     {
-        // Réinitialiser les coûts des nœuds
+        // Rï¿½initialiser les coï¿½ts des nï¿½uds
         foreach (PathNode node in graphNodes)
         {
             node.gCost = Mathf.Infinity;

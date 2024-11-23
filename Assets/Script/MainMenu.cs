@@ -5,15 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public GameObject welcomeScreen; // Référence à l'écran "Appuyez sur une touche"
+    public GameObject welcomeScreen; // Rï¿½fï¿½rence ï¿½ l'ï¿½cran "Appuyez sur une touche"
     public GameObject Title;
-    public GameObject mainMenu;      // Référence au menu principal
+    public GameObject mainMenu;      // Rï¿½fï¿½rence au menu principal
 
     private bool hasKeyPressed = false;
 
     void Start()
     {
-        // Assurez-vous que seul l'écran de bienvenue est actif au début
+        
         welcomeScreen.SetActive(true);
         Title.SetActive(false);
         mainMenu.SetActive(false);
@@ -21,7 +21,7 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
-        // Détecter si une touche est pressée
+        // Dï¿½tecter si une touche est pressï¿½e
         if (!hasKeyPressed && Input.anyKeyDown)
         {
             Debug.Log("touche pesser");
@@ -32,7 +32,7 @@ public class MainMenu : MonoBehaviour
 
     void ShowMainMenu()
     {
-        // Désactiver l'écran de bienvenue et activer le menu principal
+        // Dï¿½sactiver l'ï¿½cran de bienvenue et activer le menu principal
         welcomeScreen.SetActive(false);
         Title.SetActive(true);
         mainMenu.SetActive(true);
