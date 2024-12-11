@@ -5595,6 +5595,7 @@ GameObject:
   m_Component:
   - component: {fileID: 890443452}
   - component: {fileID: 890443451}
+  - component: {fileID: 890443453}
   m_Layer: 0
   m_Name: ControlManager
   m_TagString: Untagged
@@ -5632,6 +5633,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &890443453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 890443450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5143c616ce0d48b42b232f9d0e42db14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enviroClip: {fileID: 8300000, guid: 6ec1c060a43f2d949a5d99e0835271e0, type: 3}
+  coinCollectClip: {fileID: 8300000, guid: 2a2741425fda8014d944e82abf191738, type: 3}
+  windPushClip: {fileID: 8300000, guid: bb8eaef77a0ef3243a25beb3691450d6, type: 3}
+  menuMusic: {fileID: 0}
+  gameMusic: {fileID: 0}
+  environmentVolume: 0.5
+  agentVolume: 0.5
+  musicVolume: 0.5
 --- !u!1001 &898927417
 PrefabInstance:
   m_ObjectHideFlags: 0

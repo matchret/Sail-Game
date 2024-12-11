@@ -41,6 +41,7 @@ public class GameLoopManager : MonoBehaviour
         Debug.Log("Le jeu commence !");
         SetupBoats();
         StartPlayerTurn();
+        AudioManager.Instance.PlayEnvironmentSounds();
         ControlManager.Instance.IsAPlayerMouse();
 
 
@@ -279,6 +280,7 @@ public class GameLoopManager : MonoBehaviour
         forceBar.gameObject.SetActive(false); // Cacher la barre de force
 
         GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
+        AudioManager.Instance.PlayWindPushSound(activeBoat.transform.position + Vector3.up * 8f);
 
         // Appliquer la force au bateau actif
         Rigidbody rb = activeBoat.GetComponent<Rigidbody>();

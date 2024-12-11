@@ -12,6 +12,7 @@ public class BoatController : MonoBehaviour
     {
         if (other.CompareTag("Coin"))
         {
+            AudioManager.Instance.PlayCoinCollectSound(other.transform.position + Vector3.up * 8f);
             Debug.Log($"Joueur {playerNumber} a collecté une pièce !");
             gameLoopManager.CoinCollected(playerNumber, other.gameObject);
         }
