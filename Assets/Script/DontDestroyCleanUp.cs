@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class DontDestroyCleanup : MonoBehaviour
 {
     void Awake()
-    { /**
+    { 
         // Find all root objects in the DontDestroyOnLoad scene
         GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
 
@@ -17,16 +17,16 @@ public class DontDestroyCleanup : MonoBehaviour
                 Destroy(obj);
             }
         }
-**/    }
+    }
 
     void Start()
-    {/**
+    {
         // Additional cleanup method
-        CleanupPersistentObjects(); **/
+        CleanupPersistentObjects(); 
     }
 
     void CleanupPersistentObjects()
-    { /**
+    { 
         // More comprehensive cleanup
         GameObject[] allObjects = FindObjectsOfType<GameObject>();
         foreach (GameObject obj in allObjects)
@@ -43,5 +43,5 @@ public class DontDestroyCleanup : MonoBehaviour
                 }
             }
         }
-     **/}
+     }
 }
