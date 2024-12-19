@@ -759,7 +759,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &102764437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3895,7 +3895,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 66.5
+      value: 32.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3903,7 +3903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 128.3
+      value: 25.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6626,7 +6626,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13
+      value: 5.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6634,7 +6634,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 129.9
+      value: 31.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8186,7 +8186,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -45.5
+      value: 12.6
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -8194,7 +8194,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 125.5
+      value: 27.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -9436,6 +9436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1Boat: {fileID: 1690058457}
   player2Boat: {fileID: 187077580}
+  targetBoat: {fileID: 0}
   mainCamera: {fileID: 1039612806}
   forceBar: {fileID: 2090269058}
   rotationSpeed: 100
@@ -11021,7 +11022,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -91
+      value: 21.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -11029,7 +11030,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 28.6
+      value: 28.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -11166,6 +11167,7 @@ GameObject:
   - component: {fileID: 1400303426}
   - component: {fileID: 1400303425}
   - component: {fileID: 1400303427}
+  - component: {fileID: 1400303428}
   m_Layer: 0
   m_Name: BoatVisual
   m_TagString: Untagged
@@ -11254,6 +11256,22 @@ MonoBehaviour:
   floatFrequency: 1
   tiltAmplitude: 3
   tiltFrequency: 1
+--- !u!114 &1400303428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400303423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a24b4a4a0fe33648bff70677e18ad32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boatVisual: {fileID: 1400303424}
+  jumpHeight: 0.5
+  jumpDuration: 1
+  rotationSpeed: 360
 --- !u!1 &1400997619
 GameObject:
   m_ObjectHideFlags: 0
@@ -14179,6 +14197,7 @@ GameObject:
   - component: {fileID: 1808982147}
   - component: {fileID: 1808982146}
   - component: {fileID: 1808982145}
+  - component: {fileID: 1808982148}
   m_Layer: 0
   m_Name: BoatVisual2
   m_TagString: Untagged
@@ -14267,6 +14286,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1808982148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808982143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a24b4a4a0fe33648bff70677e18ad32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boatVisual: {fileID: 1808982144}
+  jumpHeight: 0.5
+  jumpDuration: 1
+  rotationSpeed: 360
 --- !u!1 &1824625470
 GameObject:
   m_ObjectHideFlags: 0
@@ -16099,7 +16134,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.2
+      value: 33.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16107,7 +16142,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -63.5
+      value: 32
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aba43f02d03044a40b99e419b2005c6f, type: 3}
       propertyPath: m_LocalRotation.w

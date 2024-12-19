@@ -8,6 +8,7 @@ public class GameLoopManager : MonoBehaviour
 {
     public GameObject player1Boat;
     public GameObject player2Boat;
+    public GameObject targetBoat;
     public Camera mainCamera;
     public Slider forceBar; // Référence à la barre de force
     public float rotationSpeed = 100f;
@@ -52,6 +53,7 @@ public class GameLoopManager : MonoBehaviour
 
     void Update()
     {
+        UpdateCameraPosition();
         if (isGameOver) return;
 
         if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Pause) || ControlManager.Instance.IsActionPressed(ControlManager.Action.PauseP2))
@@ -304,7 +306,17 @@ public class GameLoopManager : MonoBehaviour
 
     void UpdateCameraPosition()
     {
-        GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
+        GameObject activeBoat;
+        if (targetBoat != null)
+        {
+            // Si on a spécifié un bateau cible, l'utiliser
+            activeBoat = targetBoat;
+        }
+        else
+        {
+            // Sinon, comportement normal
+            activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
+        }
 
         // Position derrière le bateau
         Vector3 desiredPosition = activeBoat.transform.position - activeBoat.transform.forward * cameraDistance + Vector3.up * cameraHeight;
@@ -332,32 +344,61 @@ public class GameLoopManager : MonoBehaviour
     void EndGame()
     {
         isGameOver = true;
-        Time.timeScale = 0; // Arrêter le temps de jeu
 
         Debug.Log("Partie terminée !");
         Debug.Log($"Score Joueur 1 : {player1Score}");
         Debug.Log($"Score Joueur 2 : {player2Score}");
+        
+        targetBoat = null;
+        Transform winnerVisual = null;
 
-        // Afficher le gagnant
         if (player1Score > player2Score)
         {
-            winnerText.text = "Joueur 1 gagne!";
             Debug.Log("Joueur 1 gagne !");
+            targetBoat = player1Boat;
+            UpdateCameraPosition();
+            winnerVisual = player1Boat.transform.Find("BoatVisual");
         }
         else if (player2Score > player1Score)
         {
-            winnerText.text = "Joueur 2 gagne!";
             Debug.Log("Joueur 2 gagne !");
+            targetBoat = player2Boat;
+            UpdateCameraPosition();
+            winnerVisual = player2Boat.transform.Find("BoatVisual2");
         }
         else
         {
-            winnerText.text = "Match nul!";
             Debug.Log("Match nul !");
+            winnerText.text = "Match nul!";
+            gameOverCanvas.SetActive(true);
+            StartCoroutine(ReturnToMainMenuAfterDelay(4f));
+            return;
+        }
+        winnerText.text = player1Score > player2Score ? "Joueur 1 gagne!" : "Joueur 2 gagne!";
+        gameOverCanvas.SetActive(true);
+
+        // Mettre à jour la caméra pour se centrer sur le vainqueur
+        // La caméra se repositionnera pendant les prochains frames
+        // On ne lance pas l'animation tout de suite
+        StartCoroutine(WaitBeforeVictoryAnimation(winnerVisual));
+    }
+    
+    IEnumerator WaitBeforeVictoryAnimation(Transform winnerVisual)
+    {
+        // Attendre un peu pour permettre à la caméra d'effectuer plusieurs Update()
+        // et donc de se rapprocher du targetBoat
+        yield return new WaitForSeconds(0.5f); // Ajustez le délai en fonction de la vitesse de Lerp
+
+        if (winnerVisual != null)
+        {
+            Debug.Log("Lancement de l'animation de victoire.");
+            BoatVictoryAnimation victoryAnim = winnerVisual.GetComponent<BoatVictoryAnimation>();
+            if (victoryAnim != null)
+            {
+                victoryAnim.PlayVictoryAnimation();
+            }
         }
 
-        // Activer l'écran de fin de jeu
-        gameOverCanvas.SetActive(true);
-        
         StartCoroutine(ReturnToMainMenuAfterDelay(4f));
         AudioManager.Instance.StopEnvironmentSounds();
     }

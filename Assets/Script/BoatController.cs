@@ -7,6 +7,7 @@ public class BoatController : MonoBehaviour
 
     private int rotationSpeed=100;
     public float forceTarget = 50f;
+    
 
     private void OnTriggerEnter(Collider other)
     {
