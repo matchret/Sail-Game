@@ -17,6 +17,7 @@ public class MainMenu : MonoBehaviour
         welcomeScreen.SetActive(true);
         Title.SetActive(false);
         mainMenu.SetActive(false);
+        AudioManager.Instance.PlayMenuMusic();
     }
 
     void Update()
@@ -39,6 +40,7 @@ public class MainMenu : MonoBehaviour
     }
     public void PlayGame()
     {
+        AudioManager.Instance.StopMenuMusic();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

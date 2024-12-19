@@ -13,12 +13,14 @@ public class AudioManager : MonoBehaviour
     public AudioClip windPushClip;
 
     [Header("Music")]
-    public AudioSource menuMusic;
-    public AudioSource gameMusic;
+    public AudioClip menuMusicInput;
+    public AudioClip gameMusicInput;
+    private AudioSource menuMusic;
+    private AudioSource gameMusic;
 
     [Header("Volumes")]
     [Range(0, 1)] public float environmentVolume = 0.5f;
-    [Range(0, 1)] public float agentVolume = 1f;
+    [Range(0, 1)] public float agentVolume = 0.5f;
     [Range(0, 1)] public float musicVolume = 0.5f;
 
     private void Awake()
@@ -70,25 +72,28 @@ public class AudioManager : MonoBehaviour
         }
 
         // Configuration des sources de musique
-        if (menuMusic != null)
+        if (menuMusicInput != null)
         {
-            menuMusic.playOnAwake = false;
-            menuMusic.loop = true;
+            menuMusic = gameObject.AddComponent<AudioSource>();
+            menuMusic.clip = menuMusicInput;
             menuMusic.volume = musicVolume;
+            menuMusic.loop = true;
+            menuMusic.playOnAwake = false;
         }
 
-        if (gameMusic != null)
+        if (gameMusicInput != null)
         {
-            gameMusic.playOnAwake = false;
-            gameMusic.loop = true;
+            gameMusic = gameObject.AddComponent<AudioSource>();
+            gameMusic.clip = gameMusicInput;
             gameMusic.volume = musicVolume;
+            gameMusic.loop = true;
+            gameMusic.playOnAwake = false;
         }
     }
 
     private void Start()
     {
-        // Démarrer la musique de menu
-        PlayMenuMusic();
+
     }
 
     #region Environment Sounds
@@ -118,7 +123,7 @@ public class AudioManager : MonoBehaviour
     {
         if (coinCollectClip != null)
         {
-            AudioSource.PlayClipAtPoint(coinCollectClip, position, agentVolume * 100000000);
+            AudioSource.PlayClipAtPoint(coinCollectClip, position, agentVolume);
         }
         else
         {
@@ -130,7 +135,7 @@ public class AudioManager : MonoBehaviour
     {
         if (windPushClip != null)
         {
-            AudioSource.PlayClipAtPoint(windPushClip, position, agentVolume * 100000000);
+            AudioSource.PlayClipAtPoint(windPushClip, position, agentVolume);
         }
         else
         {
@@ -171,4 +176,30 @@ public class AudioManager : MonoBehaviour
     public void StopMenuMusic() => menuMusic?.Stop();
     public void StopGameMusic() => gameMusic?.Stop();
     #endregion
+
+    #region Volume Management
+    public void SetMusicVolume(float value)
+    {
+        musicVolume = value;
+        menuMusic.volume = musicVolume;
+        gameMusic.volume = musicVolume;
+        Debug.Log($"Music Volume Set to: {musicVolume}");
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        agentVolume = value;
+        Debug.Log($"SFX Volume Set to: {agentVolume}");
+    }
+
+    public void SetEnvironmentVolume(float value)
+    {
+        environmentVolume = value;
+        enviroSource.volume = environmentVolume;
+        Debug.Log($"Environment Volume Set to: {environmentVolume}");
+    }
+
+
+    #endregion
+
 }

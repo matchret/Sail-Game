@@ -42,6 +42,7 @@ public class GameLoopManager : MonoBehaviour
         SetupBoats();
         StartPlayerTurn();
         AudioManager.Instance.PlayEnvironmentSounds();
+        AudioManager.Instance.PlayGameMusic();
         ControlManager.Instance.IsAPlayerMouse();
 
 
@@ -100,16 +101,11 @@ public class GameLoopManager : MonoBehaviour
     }
     
     
-    public void OpenControlCustomizationMenu()
-    {
-        Time.timeScale = 0; // Mettre le jeu en pause
-        controlCustomizationMenu.SetActive(true); // Activer le menu de personnalisation
-        pauseMenu.SetActive(false); // Désactiver le menu de pause
-    }
     
     void TogglePause()
     {
         isPaused = !isPaused;
+        AudioManager.Instance.StopEnvironmentSounds();
 
         if (isPaused)
         {
@@ -130,6 +126,7 @@ public class GameLoopManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1; // Relance le temps
         pauseMenu.SetActive(false); // Cache le menu de pause
+        AudioManager.Instance.PlayEnvironmentSounds();
         Debug.Log("Jeu repris !");
     }
     
@@ -362,6 +359,7 @@ public class GameLoopManager : MonoBehaviour
         gameOverCanvas.SetActive(true);
         
         StartCoroutine(ReturnToMainMenuAfterDelay(4f));
+        AudioManager.Instance.StopEnvironmentSounds();
     }
     
     IEnumerator ReturnToMainMenuAfterDelay(float delay)
