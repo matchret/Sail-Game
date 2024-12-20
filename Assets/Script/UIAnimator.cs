@@ -3,8 +3,6 @@ using System.Collections;
 
 public class UIAnimator : MonoBehaviour
 {
-    public AudioSource sfxSource; 
-    public ParticleSystem vfx; 
 
     // Animation d'arrivée depuis la gauche
     public IEnumerator AnimateInFromLeft(RectTransform rect, float duration, float startOffset)
@@ -25,18 +23,7 @@ public class UIAnimator : MonoBehaviour
             yield return null;
         }
         rect.anchoredPosition = initialPos;
-
-        // Jouer un SFX
-        if (sfxSource != null)
-        {
-            sfxSource.Play();
-        }
-
-        // Jouer un VFX (particules)
-        if (vfx != null)
-        {
-            vfx.Play();
-        }
+        
     }
 
     // Animation de disparition vers le haut
@@ -72,5 +59,24 @@ public class UIAnimator : MonoBehaviour
             yield return null;
         }
         rect.localScale = endScale;
+    }
+    
+    public IEnumerator AnimateOutRight(RectTransform rect, float duration, float endOffset)
+    {
+        Vector2 initialPos = rect.anchoredPosition;
+        Vector2 endPos = initialPos + new Vector2(endOffset, 0); // endOffset pixel vers la droite
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed/duration);
+            // Utiliser un easing, par exemple EaseInOutQuad
+            float easedT = EasingFunctions.EaseInOutQuad(t);
+
+            rect.anchoredPosition = Vector2.Lerp(initialPos, endPos, easedT);
+            yield return null;
+        }
+        rect.anchoredPosition = endPos;
     }
 }
