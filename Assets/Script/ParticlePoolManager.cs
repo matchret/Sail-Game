@@ -29,6 +29,8 @@ public class ParticlePoolManager : MonoBehaviour
         }
     }
 
+
+    /// Initializes the particle pools by creating inactive particles at the start.
     private void InitializePools()
     {
         foreach (var pool in particlePools)
@@ -42,6 +44,7 @@ public class ParticlePoolManager : MonoBehaviour
         }
     }
 
+    /// Spawns a particle from the pool at the specified position and rotation.
     public GameObject SpawnParticle(string poolName, Vector3 position, Quaternion rotation)
     {
         ParticlePool pool = particlePools.Find(p => p.poolName == poolName);
@@ -51,9 +54,26 @@ public class ParticlePoolManager : MonoBehaviour
             obj.SetActive(true);
             obj.transform.position = position;
             obj.transform.rotation = rotation;
-            pool.poolQueue.Enqueue(obj); // Recycle the particle
+
+            // Recycle the particle back to the pool
+            pool.poolQueue.Enqueue(obj);
             return obj;
         }
         return null;
+    }
+
+
+    /// Removes a particle by disabling its GameObject.
+    public void RemoveParticle(GameObject obj)
+    {
+        if (obj != null)
+        {
+            obj.SetActive(false);  // Disable the particle GameObject
+            Debug.Log($"Particle {obj.name} removed.");
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to remove a null particle.");
+        }
     }
 }

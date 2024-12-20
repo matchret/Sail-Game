@@ -28,7 +28,10 @@ public class GameLoopManager : MonoBehaviour
     private bool isChargingForce = false; // Indique si la barre de force est en train de se charger
     private float currentForce = 0f; // Force actuelle
     private bool isPaused = false;
-    
+
+    GameObject spawnedWind;
+    GameObject spawnedWake;
+
     //simulation axis
     private float axisValue =0f;
     private float deadZone = 0.1f;
@@ -64,6 +67,10 @@ public class GameLoopManager : MonoBehaviour
         UpdateCameraPosition();
         if (isGameOver) return;
 
+        GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
+        // Update boat particles
+        UpdateBoatParticles(activeBoat);
+
         if (ControlManager.Instance.IsActionPressed(ControlManager.Action.Pause) || ControlManager.Instance.IsActionPressed(ControlManager.Action.PauseP2))
         {
             TogglePause();
@@ -79,7 +86,6 @@ public class GameLoopManager : MonoBehaviour
             if (isAIPlayer) 
             {
                 if (!isChargingForce) StartForceSelection();
-                GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
                 AIScript aiScript = activeBoat.GetComponent<AIScript>();
 
                 if (aiScript != null)
@@ -283,11 +289,16 @@ public class GameLoopManager : MonoBehaviour
 
     void ApplyForce()
     {
+
         isChargingForce = false;
         forceBar.gameObject.SetActive(false); // Cacher la barre de force
 
         GameObject activeBoat = currentPlayer == 1 ? player1Boat : player2Boat;
-        AudioManager.Instance.PlayWindPushSound(activeBoat.transform.position + Vector3.up * 8f);
+
+        Vector3 positionBoat = activeBoat.transform.position;
+
+
+        AudioManager.Instance.PlayWindPushSound(positionBoat + Vector3.up * 8f);
 
         // Appliquer la force au bateau actif
         Rigidbody rb = activeBoat.GetComponent<Rigidbody>();
@@ -451,6 +462,36 @@ public class GameLoopManager : MonoBehaviour
             return player2Score;
 
         return 0;
+    }
+
+    private void UpdateBoatParticles(GameObject activeBoat)
+    {
+        if (activeBoat == null) return;
+
+        Rigidbody boatRb = activeBoat.GetComponent<Rigidbody>();
+
+        if (boatRb != null && boatRb.velocity.magnitude > 0.5)
+        {
+            // Correct spawn position behind the boat
+            Vector3 boatBack = activeBoat.transform.position - activeBoat.transform.forward * 20f + Vector3.up * 5f;
+
+            // Correct rotation: Look backward with the Z-axis
+            Quaternion particleRotation = Quaternion.LookRotation(-activeBoat.transform.forward, Vector3.up);
+
+            // Spawn the wind particles
+            spawnedWind = ParticlePoolManager.Instance.SpawnParticle("WindParticles", boatBack, particleRotation);
+
+            // Correct position for the wake particles
+            Vector3 wakePosition = activeBoat.transform.position - activeBoat.transform.forward * 1f + Vector3.down * 0.5f;
+
+            // Spawn the wake particles (set rotation to identity for water trail)
+            spawnedWake = ParticlePoolManager.Instance.SpawnParticle("BoatWakeParticles", wakePosition, Quaternion.identity);
+        }
+        else
+        {
+            if (spawnedWind != null) ParticlePoolManager.Instance.RemoveParticle(spawnedWind);
+            if (spawnedWake != null) ParticlePoolManager.Instance.RemoveParticle(spawnedWake);
+        }
     }
 }
 
