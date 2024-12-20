@@ -489,8 +489,17 @@ public class GameLoopManager : MonoBehaviour
         }
         else
         {
-            if (spawnedWind != null) ParticlePoolManager.Instance.RemoveParticle(spawnedWind);
-            if (spawnedWake != null) ParticlePoolManager.Instance.RemoveParticle(spawnedWake);
+            if (spawnedWind != null)
+            {
+                ParticlePoolManager.Instance.RemoveParticle(spawnedWind);
+                spawnedWind = null;
+            }
+
+            if (spawnedWake != null)
+            {
+                ParticlePoolManager.Instance.RemoveParticle(spawnedWake);
+                spawnedWake = null;
+            }
         }
     }
 }
