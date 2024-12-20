@@ -39,6 +39,14 @@ public class GameLoopManager : MonoBehaviour
 
     void Start()
     {
+
+        if (AudioManager.Instance==null) {
+            Debug.Log("AudioManager not found, creating one...");
+
+            // Dynamically create a GameObject for AudioManager
+            GameObject audioManagerObj = new GameObject("AudioManager");
+            audioManagerObj.AddComponent<AudioManager>();
+        }
         Debug.Log("Le jeu commence !");
         SetupBoats();
         StartPlayerTurn();
