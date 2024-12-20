@@ -2190,7 +2190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicSlider: {fileID: 199344753}
-  sfxSlider: {fileID: 936358665}
+  sfxSlider: {fileID: 0}
   enviroSlider: {fileID: 311363353}
 --- !u!1 &285621785 stripped
 GameObject:

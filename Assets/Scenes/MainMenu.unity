@@ -281,6 +281,58 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!1 &63312115
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 63312116}
+  - component: {fileID: 63312117}
+  m_Layer: 0
+  m_Name: SoundObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &63312116
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63312115}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 547.98663, y: 305.34692, z: -103.90979}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &63312117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63312115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5143c616ce0d48b42b232f9d0e42db14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enviroClip: {fileID: 8300000, guid: 6ec1c060a43f2d949a5d99e0835271e0, type: 3}
+  coinCollectClip: {fileID: 8300000, guid: 2a2741425fda8014d944e82abf191738, type: 3}
+  windPushClip: {fileID: 8300000, guid: bb8eaef77a0ef3243a25beb3691450d6, type: 3}
+  menuMusicInput: {fileID: 8300000, guid: 57a7ff651817a6d4dac5bfd8e44d9bde, type: 3}
+  gameMusicInput: {fileID: 8300000, guid: 5ea67c4adb59c8d4d81bccec3d28d1d0, type: 3}
+  environmentVolume: 0.5
+  agentVolume: 0.5
+  musicVolume: 0.5
 --- !u!1 &85378299
 GameObject:
   m_ObjectHideFlags: 0
@@ -8491,7 +8543,6 @@ GameObject:
   - component: {fileID: 1801017371}
   - component: {fileID: 1801017370}
   - component: {fileID: 1801017369}
-  - component: {fileID: 1801017372}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -8549,26 +8600,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1801017372
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1801017368}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5143c616ce0d48b42b232f9d0e42db14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enviroClip: {fileID: 8300000, guid: 6ec1c060a43f2d949a5d99e0835271e0, type: 3}
-  coinCollectClip: {fileID: 8300000, guid: 2a2741425fda8014d944e82abf191738, type: 3}
-  windPushClip: {fileID: 8300000, guid: bb8eaef77a0ef3243a25beb3691450d6, type: 3}
-  menuMusicInput: {fileID: 8300000, guid: 57a7ff651817a6d4dac5bfd8e44d9bde, type: 3}
-  gameMusicInput: {fileID: 8300000, guid: 5ea67c4adb59c8d4d81bccec3d28d1d0, type: 3}
-  environmentVolume: 0.5
-  agentVolume: 1
-  musicVolume: 0.5
 --- !u!1 &1829593000
 GameObject:
   m_ObjectHideFlags: 0
@@ -10503,3 +10534,4 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1042683934}
   - {fileID: 1801017371}
+  - {fileID: 63312116}
