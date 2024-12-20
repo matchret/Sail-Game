@@ -40,31 +40,15 @@ public class MenuAnimationController : MonoBehaviour
         StartCoroutine(uiAnimator.AnimateInFromLeft(optionsButtonRect,.5f, 500f));
         StartCoroutine(uiAnimator.AnimateInFromLeft(quitButtonRect,.5f, 500f));
     }
-
-    private void OnDisable()
-    {
-        //StartCoroutine(uiAnimator.AnimateOutRight(playButtonRect,.5f, 500f));
-        //StartCoroutine(uiAnimator.AnimateOutRight(optionsButtonRect,.5f, 500f));
-        //StartCoroutine(uiAnimator.AnimateOutRight(quitButtonRect,.5f, 500f));
-    }
-
-
-    public void OnPlayButtonClicked()
-    {
-        // Quand on clique sur Play, on fait disparaitre le panel vers le haut
-        //StartCoroutine(uiAnimator.AnimateOutUp(playButtonRect,.5f, 300f));
-    }
-
+    
     public void GoToAnotherMenu()
     {
-        Debug.Log("Appel à AnimateOutRight");
-        // Faire partir les boutons vers la droite avant de désactiver le menu
         StartCoroutine(HideMenuButtons());
     }
 
     IEnumerator HideMenuButtons()
     {
-        // Par exemple, les faire partir sur 0.5s, 500 pixels vers la droite
+      
         StartCoroutine(uiAnimator.AnimateOutRight(playButtonRect, 0.5f, 2000f));
         StartCoroutine(uiAnimator.AnimateOutRight(optionsButtonRect, 0.5f, 2000f));
         yield return StartCoroutine(uiAnimator.AnimateOutRight(quitButtonRect, 0.5f, 2000f));
