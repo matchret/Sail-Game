@@ -26,10 +26,8 @@ public class MenuAnimationController : MonoBehaviour
     
     void OnEnable()
     {
-        Debug.Log($"Initial Play Pos: {initialPlayButtonPosition}");
-        Debug.Log($"Initial Options Pos: {initialOptionsButtonPosition}");
-        Debug.Log($"Initial Quit Pos: {initialQuitButtonPosition}");
-
+        Debug.Log($"OnEnable appel");
+     
         
         playButtonRect.anchoredPosition = initialPlayButtonPosition;
         optionsButtonRect.anchoredPosition = initialOptionsButtonPosition;
@@ -49,10 +47,9 @@ public class MenuAnimationController : MonoBehaviour
     IEnumerator HideMenuButtons()
     {
       
-        StartCoroutine(uiAnimator.AnimateOutRight(playButtonRect, 0.5f, 2000f));
-        StartCoroutine(uiAnimator.AnimateOutRight(optionsButtonRect, 0.5f, 2000f));
-        yield return StartCoroutine(uiAnimator.AnimateOutRight(quitButtonRect, 0.5f, 2000f));
-        yield return new WaitForSecondsRealtime(0.1f); 
+        StartCoroutine(uiAnimator.AnimateOutRight(playButtonRect, .5f, 1400f));
+        StartCoroutine(uiAnimator.AnimateOutRight(optionsButtonRect, .5f, 1400f));
+        yield return StartCoroutine(uiAnimator.AnimateOutRight(quitButtonRect, .5f, 1400f));
 
         mainMenu.SetActive(false);
         localMenu.SetActive(true);

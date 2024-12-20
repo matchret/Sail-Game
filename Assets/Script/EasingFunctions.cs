@@ -31,10 +31,18 @@ public static class EasingFunctions
     // EaseInOutQuad
     public static float EaseInOutQuad(float t)
     {
-        t *= 2f;
-        if (t < 1f)
-            return 0.5f*t*t;
-        t -= 1f;
-        return 0.5f*(t*(t-2f)-1f);
+        if (t < 0.5f)
+        {
+            // Dans la première moitié, ça monte avec 2t²
+            return 2f * t * t;
+        }
+        else
+        {
+            // Dans la seconde moitié, on utilise la symétrie
+            // Penner's formula : EaseInOutQuad(t) = -2t²+4t-1 pour t≥0.5
+            t = t - 0.5f;
+            return -2f * t * t + 2f * t + 0.5f;
+        }
     }
+
 }
