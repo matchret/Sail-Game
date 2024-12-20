@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        // Gestion du singleton avec préservation de la configuration audio existante
+        // Gestion du singleton avec prï¿½servation de la configuration audio existante
         if (Instance == null)
         {
             Instance = this;
@@ -34,7 +34,7 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            // Au lieu de détruire complètement, on copie les configurations
+            // Au lieu de dï¿½truire complï¿½tement, on copie les configurations
             CopyAudioSettingsFrom(Instance);
             Destroy(gameObject);
         }
@@ -52,7 +52,7 @@ public class AudioManager : MonoBehaviour
         coinCollectClip = existingManager.coinCollectClip;
         windPushClip = existingManager.windPushClip;
 
-        // Copier les sources de musique (si nécessaire)
+        // Copier les sources de musique (si nï¿½cessaire)
         if (existingManager.menuMusic != null)
             menuMusic = existingManager.menuMusic;
         if (existingManager.gameMusic != null)

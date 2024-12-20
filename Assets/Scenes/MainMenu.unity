@@ -331,7 +331,7 @@ MonoBehaviour:
   menuMusicInput: {fileID: 8300000, guid: 57a7ff651817a6d4dac5bfd8e44d9bde, type: 3}
   gameMusicInput: {fileID: 8300000, guid: 5ea67c4adb59c8d4d81bccec3d28d1d0, type: 3}
   environmentVolume: 0.5
-  agentVolume: 0.5
+  agentVolume: 0.9
   musicVolume: 0.5
 --- !u!1 &85378299
 GameObject:
@@ -9806,6 +9806,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 478bd1488de2ddb4a8a4df33c3849daf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAnimating: 0
 --- !u!4 &2001579891
 Transform:
   m_ObjectHideFlags: 0
