@@ -23,9 +23,9 @@ A simple Unity game where players control a sailboat with the goal of collecting
 3. **Run the Game:** Build and run the game from within Unity.
    
 ## How to Play
-Objective: Collect all 3 coins on the map.
-Controls: Use your preferred input device (keyboard/mouse or controller) to navigate your sailboat.
-Button Mapping: Customize controls as needed.
+**Objective:** Collect all 3 coins on the map.
+**Controls:** Use your preferred input device (keyboard/mouse or controller) to navigate your sailboat.
+**Button Mapping:** Customize controls as needed.
 
 ## Authors
 Mathieu Chrétien
