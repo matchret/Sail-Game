@@ -1,6 +1,6 @@
 # First Unity Game
 
-![Game Banner](assets/sailgame_photo.PNG)
+![Game Banner](Assets/sailgame_photo.PNG)
 
 A simple Unity game where players control a sailboat with the goal of collecting 3 coins scattered across the map. The game also features an option for an AI-controlled player.
 
