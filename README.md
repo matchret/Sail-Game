@@ -30,6 +30,3 @@ Button Mapping: Customize controls as needed.
 ## Authors
 Mathieu Chrétien
 Vincent Cousineau
-
-## License
-AFL-3.0
